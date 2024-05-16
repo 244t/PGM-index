@@ -142,3 +142,41 @@ Query(A,n,ε,levels,k)
 ![alt text](images/pgm.png)
 
 **Them.1**
+
+n個のkeyからなる順序配列 $A$ 、整数$\epsilon \ge 1$を固定整数パラメータとする.
+
+このとき、パラメータ $\epsilon$  で定義されるPGM-indexは, 
+空間量$ \Theta(m) $ で $A$ をインデックスづけ,
+membershipとpredecessorクエリを時間$O(log\space m +log \space \epsilon )$, I/O は $O((log_c\space m)log(\epsilon /B))$
+
+
+但し, 
+- $m$ は $A$ をカバーする $\epsilon $ 近似セグメントの最小数
+- $c\space(\ge 2\epsilon)$はデータ構造の可変fan-out
+- Bは外部メモリモデルのブロックサイズ
+
+範囲は余分な時間 $O(K)$ ,とI/Oは $O(K/B)$ 
+
+- $K$ は範囲クエリを満たすkeyの数
+
+proof.
+
+再帰の各ステップで、セグメントの数を $c(\ge 2 \epsilon+1)$ だけ減らす.
+よってレベル数 $L$ は, $L = O(log_c \space m)$ .
+また, indexに必要な総空間量は, $ \sum_{l = 0}^L \frac{m}{(2\epsilon+1)^l} = \Theta(m)$.
+
+membership, rank, predecessorクエリにおいて、時間の上限とI/Oは最大で $2\epsilon+1$ の二分探索を $L+1$ 回実行するので, 時間は $O((L+1)\space log(2\epsilon+1)) = O((log_c\space m + 1)log(2\epsilon+1))$
+
+$$log_c \space m = \frac{log \space m}{log \space c} \le \frac{log \space m}{log \space (2\epsilon+1)}$$
+
+よって,
+$$ O((L+1)log(2\epsilon+1)) = O(log(m))+O(log(\epsilon))$$
+
+- $\Theta(g(n))$とは, ある定数$c_1,c_2,n_0$が存在して, $n\ge n_0$に対して, $0 \le c_1 g(n) \le f(n)\le c_2 g(n)$ を満たす $f(n)$ の集合
+
+# 実験
+
+## 論文で行われた実験
+- uniform 区間[0,u]
+- 指数sのZipf分布
+- 標準偏差σの対数正規分布
